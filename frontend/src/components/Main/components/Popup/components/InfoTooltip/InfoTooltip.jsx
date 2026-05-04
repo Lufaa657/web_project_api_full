@@ -12,20 +12,21 @@ export default function InfoTooltip({ error, signIn = false, signUpSuccess }) {
 
   useEffect(() => {
     if (signUpSuccess) {
-      setMessage("Parabéns! Agora é só fazer o login.");
+      setMessage("¡Felicidades! Ahora solo inicia sesión.");
     } else if (error?.status === BAD_REQUEST) {
-      setMessage("O endereço de e-mail informado é inválido!");
+      setMessage("El correo electrónico ingresado no es válido.");
     } else if (error?.status === CONFLICT_ERROR) {
-      setMessage("O endereço de e-mail já está cadastrado!");
+      setMessage("El correo electrónico ya está registrado.");
     } else if (error?.status === UNAUTHORIZED && signIn) {
-      setMessage("E-mail ou senha inválida! Verifique e tente novamente.");
+      setMessage("Correo electrónico o contraseña incorrectos. Intenta nuevamente.");
     } else if (error?.status === UNAUTHORIZED && !signIn) {
       setMessage(
-        "Sua sessão expirou! Por favor, faça login novamente para continuar."
+        "Tu sesión expiró. Por favor inicia sesión nuevamente para continuar."
       );
     } else {
-      setMessage("Desculpe, algo deu errado! Tente novamente mais tarde.");
+      setMessage("Lo sentimos, algo salió mal. Intenta nuevamente más tarde.");
     }
+
     setImageSrc(error ? errorImg : successImg);
   }, [error, signIn, signUpSuccess]);
 
