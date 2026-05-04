@@ -20,8 +20,8 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState("");
   const [popup, setPopup] = useState("");
   const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // carrega a tela de loading da autenticação e carregamento dos dados
-  const [isProcessing, setIsProcessing] = useState(false); // muda o botão de login e registro, durante o processamento do request
+  const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const navigate = useNavigate();
   const formRef = useRef();
@@ -30,26 +30,32 @@ export default function App() {
     try {
       const currentUser = await auth.getCurrentUser(jwt);
       const cards = await api.getInitialCards();
+
       setCurrentUser(currentUser);
       setIsLoggedIn(true);
       setCards(cards);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
-      const errorPopup = { children: <InfoTooltip error={error} /> };
-      setPopup(errorPopup); // monta a popup para exibir o erro
+
+      const errorPopup = {
+        children: <InfoTooltip signIn />,
+      };
+
+      setPopup(errorPopup);
+
       if (error.status === 401) {
         removeToken();
         setIsLoggedIn(false);
         setIsLoading(false);
-        return;
       }
     }
   }
 
   useEffect(() => {
     const jwt = getToken();
-    const browserWarning = CheckBrowserVersion(); // verifica a versão do navegador e retorna um componente caso verdadeiro
+    const browserWarning = CheckBrowserVersion();
+
     if (jwt) {
       initializeSession(jwt);
     } else {
@@ -62,10 +68,12 @@ export default function App() {
       if (evt.persisted) {
         setIsLoading(true);
         const refreshedJWT = getToken();
+
         if (!refreshedJWT) {
           window.location.reload();
           return;
         }
+
         setIsLoading(false);
       }
     }
@@ -77,40 +85,42 @@ export default function App() {
   function handleOpenPopup(popup) {
     setPopup(popup);
   }
+
   function handleClosePopup() {
     setPopup("");
   }
 
-  //envia os dados para requistar atualização dos dados do usuário atual
   async function handleUpdateUser(userInfo) {
     try {
       const newUserInfo = await api.updateUserInfo(userInfo);
+
       setCurrentUser((prevState) => ({
         ...prevState,
         name: newUserInfo.name,
         about: newUserInfo.about,
       }));
+
       handleClosePopup();
     } catch (error) {
       console.error(error);
     }
   }
 
-  // envia os dados e requisita a atualização do avatar do usuário atual
   async function handleUpdateAvatar(newAvatarUrl) {
     try {
       const newUserInfo = await api.updateUserAvatar(newAvatarUrl);
+
       setCurrentUser((prevState) => ({
         ...prevState,
         avatar: newUserInfo.avatar,
       }));
+
       handleClosePopup();
     } catch (error) {
       console.error(error);
     }
   }
 
-  // envia os dados do card para requisita a adição novo card
   async function handleAddPlaceSubmit(cardInfo) {
     try {
       const newCard = await api.addNewCard(cardInfo);
@@ -120,7 +130,7 @@ export default function App() {
       console.error(error);
     }
   }
-  // Requisita a remoção do card do id selecionado
+
   async function handleCardDelete(id) {
     try {
       await api.deleteCard(id);
@@ -133,10 +143,10 @@ export default function App() {
     }
   }
 
-  // Requisita o like do id do card selecionado
   async function handleCardLike(isLiked, card) {
     try {
       const newCard = await api.editLikeStatus(isLiked, card._id);
+
       setCards((state) =>
         state.map((currentCard) =>
           currentCard._id === newCard._id ? newCard : currentCard
@@ -147,46 +157,56 @@ export default function App() {
     }
   }
 
-  // Envia os dados do registro
   async function handleSignUp(data) {
     try {
+      setIsProcessing(true);
+
       const successPopup = {
         children: <InfoTooltip signUpSuccess />,
-        type: "signUp",
       };
-      setIsProcessing(true);
+
       await auth.register(data);
+
       setPopup(successPopup);
+
       setTimeout(() => {
         setPopup("");
         navigate("/signin", { replace: true });
       }, 1000);
     } catch (error) {
-      const errorPopup = { children: <InfoTooltip error={error} /> };
+      const errorPopup = {
+        children: <InfoTooltip />,
+      };
+
       setPopup(errorPopup);
     } finally {
       setIsProcessing(false);
     }
   }
 
-  // Envia os dados de login para requisitar a autorização
   async function handleSignIn(user) {
     try {
       setIsProcessing(true);
+
       const { token } = await auth.authorize(user);
+
       setToken(token);
       setIsLoading(true);
+
       initializeSession(token);
+
       navigate("/", { replace: true });
     } catch (error) {
-      const errorPopup = { children: <InfoTooltip error={error} signIn /> };
+      const errorPopup = {
+        children: <InfoTooltip signIn />,
+      };
+
       setPopup(errorPopup);
     } finally {
       setIsProcessing(false);
     }
   }
 
-  // Inicia o logout removendo o token e limpando os estados
   function handleSignOut() {
     removeToken();
     setIsLoggedIn(false);
@@ -195,7 +215,6 @@ export default function App() {
     navigate("/signin", { replace: true });
   }
 
-  // Tela de loading enquanto é feita autorização
   if (isLoading) {
     return (
       <div className="loading">
@@ -209,7 +228,7 @@ export default function App() {
   return (
     <CurrentUserContext.Provider
       value={{
-        currentUser: currentUser,
+        currentUser,
         isLoggedIn,
         onUpdateUser: handleUpdateUser,
         onUpdateAvatar: handleUpdateAvatar,
@@ -218,6 +237,7 @@ export default function App() {
     >
       <div className="page">
         <Header formRef={formRef} />
+
         <Routes>
           <Route
             path="/"
@@ -235,6 +255,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/signin"
             element={
@@ -249,6 +270,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/signup"
             element={
@@ -262,8 +284,10 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
         <Footer />
       </div>
     </CurrentUserContext.Provider>
