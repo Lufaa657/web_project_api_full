@@ -8,30 +8,20 @@ module.exports = (err, req, res, next) => {
 
   if (name === 'ValidationError') {
     const errorMessage = Object.values(err.errors).map((e) => e.message);
-    res.status(BAD_REQUEST).send({
-      message: `Error de validación: ${errorMessage}`,
-    });
+    res.status(BAD_REQUEST).send({ message: `${errorMessage}` });
     return;
   }
-
   if (name === 'CastError') {
-    res.status(BAD_REQUEST).send({
-      message: 'El ID proporcionado no es válido.',
-    });
+    res.status(BAD_REQUEST).send({ message: 'The provided ID is invalid.' });
     return;
   }
 
   if (err.code === DUPLICATED_KEY) {
-    res.status(CONFLICT_ERROR).send({
-      message: 'El elemento ya existe.',
-    });
+    res.status(CONFLICT_ERROR).send({ message: 'The provided key already exists.' });
     return;
   }
 
   res.status(statusCode).send({
-    message:
-      statusCode !== INTERNAL_SERVER_ERROR
-        ? message
-        : 'Error interno del servidor.',
+    message: statusCode !== INTERNAL_SERVER_ERROR ? message : 'Internal Server Error.',
   });
 };
