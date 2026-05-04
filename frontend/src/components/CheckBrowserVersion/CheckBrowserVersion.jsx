@@ -8,7 +8,7 @@ export default function CheckBrowserVersion() {
   );
 
   const errorMessage =
-    "Atualize seu navegador para a versão mais recente para garantir sua segurança e a melhor experiência.";
+    "Actualiza tu navegador a la versión más reciente para garantizar tu seguridad y la mejor experiencia.";
 
   if (
     (browser === "Chrome" && version < 118) ||
