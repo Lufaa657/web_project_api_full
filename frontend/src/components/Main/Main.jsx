@@ -20,15 +20,17 @@ export default function Main(props) {
   } = props;
 
   const editAvatarPopup = {
-    title: "Alterar a foto do perfil",
+    title: "Cambiar foto de perfil",
     children: <EditAvatar />,
   };
+
   const editProfilePopup = {
     title: "Editar perfil",
     children: <EditProfile />,
   };
+
   const newCardPopup = {
-    title: "Novo local",
+    title: "Nuevo lugar",
     children: <NewCard onAddPlaceSubmit={onAddPlaceSubmit} />,
   };
 
@@ -38,35 +40,41 @@ export default function Main(props) {
         <div className="profile__avatar-container">
           <img
             src={currentUser.avatar}
-            alt="avatar"
+            alt="avatar del usuario"
             className="profile__avatar"
           />
+
           <button
             type="button"
-            aria-label="Edit avatar"
+            aria-label="Editar foto de perfil"
             className="button button_avatar"
             onClick={() => onOpenPopup(editAvatarPopup)}
           ></button>
         </div>
+
         <div className="profile__info">
           <div className="profile__name-button-container">
             <h1 className="profile__name">{currentUser.name}</h1>
+
             <button
               type="button"
-              aria-label="Edit profile"
+              aria-label="Editar perfil"
               className="button button_edit"
               onClick={() => onOpenPopup(editProfilePopup)}
             ></button>
           </div>
+
           <p className="profile__job">{currentUser.about}</p>
         </div>
+
         <button
           type="button"
-          aria-label="Add card"
+          aria-label="Agregar tarjeta"
           className="button button_add"
           onClick={() => onOpenPopup(newCardPopup)}
         ></button>
       </section>
+
       <section className="gallery">
         <ul className="gallery__cards">
           {cards.map((card) => (

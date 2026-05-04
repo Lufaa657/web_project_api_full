@@ -29,7 +29,8 @@ export default function Register(props) {
   return (
     <main className="main">
       <section className="register">
-        <h1 className="register__title">Inscreva-se</h1>
+        <h1 className="register__title">Registrarse</h1>
+
         <form
           onSubmit={handleSubmitClick}
           action="get"
@@ -43,12 +44,13 @@ export default function Register(props) {
                 name="email"
                 id="email"
                 className="input input_auth"
-                placeholder="E-mail"
+                placeholder="Correo electrónico"
                 spellCheck={false}
                 autoComplete="new-email"
                 required
               />
             </label>
+
             <label className="register__form-field">
               <input
                 onChange={handleOnChange}
@@ -56,34 +58,36 @@ export default function Register(props) {
                 name="password"
                 id="password"
                 className="input input_auth"
-                placeholder="Senha"
+                placeholder="Contraseña"
                 minLength={8}
                 spellCheck={false}
                 autoComplete="new-password"
                 required
               />
             </label>
+
             <button
               type="submit"
               className="button button_auth-submit"
               disabled={isProcessing}
             >
-              {!isProcessing ? "Inscrever-se" : "Criando conta..."}
+              {!isProcessing ? "Crear cuenta" : "Creando cuenta..."}
             </button>
           </fieldset>
         </form>
+
         <p className="register__signin-text">
-          Já é um membro?
+          ¿Ya tienes una cuenta?
           <button
             type="button"
             onClick={handleSignUpClick}
-            to="/signup"
             className="button button_goto"
           >
-            Faça o login!
+            Inicia sesión
           </button>
         </p>
       </section>
+
       {popup && <Popup onClose={onClosePopup}>{popup.children}</Popup>}
     </main>
   );

@@ -15,10 +15,12 @@ export default function Header({ formRef }) {
         setIsMenuOpen(false);
       }
     };
+
     if (isLoggedIn) {
       setIsMobile(window.innerWidth <= 590);
       window.addEventListener("resize", handleResize);
     }
+
     return () => window.removeEventListener("resize", handleResize);
   }, [isMenuOpen, isLoggedIn]);
 
@@ -32,7 +34,7 @@ export default function Header({ formRef }) {
         <div className="header__container">
           <img
             src={aroundLogo}
-            alt="logotipo EUA Afora"
+            alt="logotipo Around the U.S."
             className="header__logo"
           />
 

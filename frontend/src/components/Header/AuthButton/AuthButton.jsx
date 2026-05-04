@@ -6,7 +6,8 @@ export default function AuthButton({ formRef, isMenuOpen, isMobile = false }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { isLoggedIn, onSignOut, currentUser } = useContext(CurrentUserContext);
+  const { isLoggedIn, onSignOut, currentUser } =
+    useContext(CurrentUserContext);
 
   const [displayMenu, setDisplayMenu] = useState(false);
 
@@ -36,12 +37,13 @@ export default function AuthButton({ formRef, isMenuOpen, isMobile = false }) {
         }`}
       >
         <p className="header__e-mail">{currentUser.email}</p>
+
         <button
           onClick={handleSignOutClick}
           type="button"
           className="button button_auth button_auth_logged-in"
         >
-          Sair
+          Cerrar sesión
         </button>
       </div>
     );
@@ -54,11 +56,11 @@ export default function AuthButton({ formRef, isMenuOpen, isMobile = false }) {
           onClick={() => navigate("/signin")}
           className="button button_auth"
         >
-          Faça o Login
+          Iniciar sesión
         </button>
       ) : (
         <button onClick={handleFormFocusClick} className="button button_auth">
-          Entrar
+          Iniciar sesión
         </button>
       )}
     </>

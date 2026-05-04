@@ -25,7 +25,7 @@ export default function Card(props) {
   }
 
   const removeCard = {
-    title: "Tem certeza?",
+    title: "¿Estás seguro?",
     children: <RemoveCard cardId={id} onCardDelete={onCardDelete} />,
   };
 
@@ -37,19 +37,22 @@ export default function Card(props) {
         className="card__image"
         onClick={() => onOpenPopup(imagePopup)}
       />
+
       {currentUser._id === ownerId && (
         <button
           type="button"
-          aria-label="Delete card"
+          aria-label="Eliminar tarjeta"
           className="button button_remove"
           onClick={() => onOpenPopup(removeCard)}
         ></button>
       )}
+
       <div className="card__title-container">
         <h2 className="card__title">{name}</h2>
+
         <button
           type="button"
-          aria-label="Like card"
+          aria-label="Dar like"
           className={`button button_like ${
             isLiked ? "button_like_activate" : ""
           }`}

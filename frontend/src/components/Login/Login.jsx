@@ -29,7 +29,8 @@ export default function Login(props) {
   return (
     <main className="main">
       <section className="login">
-        <h1 className="login__title">Entrar</h1>
+        <h1 className="login__title">Iniciar sesión</h1>
+
         <form
           onSubmit={handleSubmitClick}
           ref={formRef}
@@ -44,12 +45,13 @@ export default function Login(props) {
                 name="email"
                 id="email"
                 className="input input_auth"
-                placeholder="E-mail"
+                placeholder="Correo electrónico"
                 spellCheck={false}
                 value={data.email}
                 required
               />
             </label>
+
             <label className="login__form-field">
               <input
                 onChange={handleOnChange}
@@ -57,33 +59,35 @@ export default function Login(props) {
                 name="password"
                 id="password"
                 className="input input_auth"
-                placeholder="Senha"
+                placeholder="Contraseña"
                 spellCheck={false}
                 value={data.password}
                 required
               />
             </label>
+
             <button
               type="submit"
               className="button button_auth-submit"
               disabled={isProcessing}
             >
-              {!isProcessing ? "Entrar" : "Entrando..."}
+              {!isProcessing ? "Iniciar sesión" : "Iniciando sesión..."}
             </button>
           </fieldset>
         </form>
+
         <p className="login__signup-text">
-          Ainda não é membro?
+          ¿Aún no tienes cuenta?
           <button
             type="button"
             onClick={handleSignUpClick}
-            to="/signup"
             className="button button_goto"
           >
-            Inscreva-se aqui!
+            Regístrate aquí
           </button>
         </p>
       </section>
+
       {popup && <Popup onClose={onClosePopup}>{popup.children}</Popup>}
     </main>
   );
